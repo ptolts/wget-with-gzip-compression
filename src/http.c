@@ -1563,6 +1563,8 @@ Refusing to truncate existing file `%s'.\n\n"), *hs->local_file);
   } else {
   /* Compression */
 
+  int total_size = 0;
+
   char template[] = "fnXXXXXX";
   FILE *ftemp;
   int err, num_read, num_wr ;
@@ -1584,6 +1586,7 @@ Refusing to truncate existing file `%s'.\n\n"), *hs->local_file);
     }
   while(1) { // copy decompressed data to temp file
     num_read = gzread(gz_file, (void *) buffer, sizeof(buffer));
+    total_size += num_read;
     if(num_read == 0) break;
     if(num_read < 0) {
       logprintf (LOG_NOTQUIET, "gzread: %s\n", strerror (errno));
@@ -1597,6 +1600,9 @@ Refusing to truncate existing file `%s'.\n\n"), *hs->local_file);
       return FOPENERR;
       }
     }
+
+  total_downloaded_bytes += total_size;
+
   fclose(ftemp);
   gzclose(gz_file);
   unlink(*hs->local_file);
@@ -2007,7 +2013,7 @@ The sizes do not match (local %ld) -- retrieving.\n"), local_size);
 			 tms, u->url, hstat.len, hstat.contlen, locf, count);
 	    }
 	  ++opt.numurls;
-	  total_downloaded_bytes += hstat.len;
+	  //total_downloaded_bytes += hstat.len;
 
 	  /* Remember that we downloaded the file for later ".orig" code. */
 	  if (*dt & ADDED_HTML_EXTENSION)
@@ -2034,7 +2040,7 @@ The sizes do not match (local %ld) -- retrieving.\n"), local_size);
 			     tms, u->url, hstat.len, locf, count);
 		}
 	      ++opt.numurls;
-	      total_downloaded_bytes += hstat.len;
+	      //total_downloaded_bytes += hstat.len;
 
 	      /* Remember that we downloaded the file for later ".orig" code. */
 	      if (*dt & ADDED_HTML_EXTENSION)
@@ -2065,7 +2071,7 @@ The sizes do not match (local %ld) -- retrieving.\n"), local_size);
 			 "%s URL:%s [%ld/%ld] -> \"%s\" [%d]\n",
 			 tms, u->url, hstat.len, hstat.contlen, locf, count);
 	      ++opt.numurls;
-	      total_downloaded_bytes += hstat.len;
+	      //total_downloaded_bytes += hstat.len;
 
 	      /* Remember that we downloaded the file for later ".orig" code. */
 	      if (*dt & ADDED_HTML_EXTENSION)

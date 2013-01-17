@@ -58,7 +58,7 @@ CFLAGS =  -O2 -Wall -Wno-implicit
 CPPFLAGS = 
 DEFS = -DHAVE_CONFIG_H -DSYSTEM_WGETRC=\"$(sysconfdir)/wgetrc\" -DLOCALEDIR=\"$(localedir)\"
 LIBS = -lssl -lcrypto -ldl -lz
-LDFLAGS = 
+LDFLAGS = -lz
 
 #
 # End of user configuration section.  There should be no need to change

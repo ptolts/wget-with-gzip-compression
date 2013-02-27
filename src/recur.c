@@ -74,6 +74,7 @@ struct queue_element {
 				   be treated as HTML. */
 
   struct queue_element *next;	/* next element in queue */
+  struct queue_element *previous; /* previous element in queue */
 };
 
 struct url_queue {
@@ -122,12 +123,65 @@ url_enqueue (struct url_queue *queue,
   DEBUGP (("Enqueuing %s at depth %d\n", url, depth));
   DEBUGP (("Queue count %d, maxcount %d.\n", queue->count, queue->maxcount));
 
-  if (queue->tail)
-    queue->tail->next = qel;
-  queue->tail = qel;
+   if (queue->count > queue->maxcount){
+         queue->maxcount = queue->count;
+   }
 
-  if (!queue->head)
-    queue->head = queue->tail;
+   if (queue->tail) {
+      queue->tail->next = qel;
+      qel->previous = queue->tail;
+   }
+
+   queue->tail = qel;
+
+   if (!queue->head){
+      queue->head = queue->tail;
+   }
+
+   // SORT QUEUE. THIS SHOULD OCCUR ONLY AFTER A LITS OF URLS IS INSERTED.
+   struct queue_element *i, *j; /// i and j for bubble sorting, k for catching tail
+   struct queue_element *old_next; /* next element in queue */
+   struct queue_element *old_previous; /* next element in queue */
+   for(i=queue->head; i!=queue->tail; i=i->next) /// Outer loop from head to tail
+      {
+      for(j=queue->head; ;j=j->next) /// Inner loop from head; breaks when tail is reached
+      {
+         printf("%d\n",strcmp(j->url,j->next->url));
+         if(strcmp(j->url,j->next->url)<0) /// Comparing!!! Not 4 pieces of -> ;)
+         {
+            old_previous = j->previous;
+            old_next = j->next;
+
+            if(queue->head==j){
+               queue->head = j->next;
+               j->next->previous = NULL;
+            } else {
+               j->previous->next = j->next;
+            }
+
+
+            if(queue->tail==j->next){
+               queue->tail = j;
+               j->next->next == NULL;
+            } else {
+               j->next->next->previous = j;
+            }
+
+            j->previous = old_next;
+            j->next = old_next->next;
+
+            old_next->next = j;           
+
+         }
+         if(j->next==queue->tail || j->next == NULL)
+         {
+            break; /// Breaks when tail is reached
+         }
+      }
+   }   
+
+
+
 }
 
 /* Take a URL out of the queue.  Return 1 if this operation succeeded,

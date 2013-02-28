@@ -54,7 +54,7 @@ manext      = 1
 localedir   = $(prefix)/share/locale
 
 CC = gcc
-CFLAGS =  -O2 -Wall -Wno-implicit
+CFLAGS =  -O2 -Wall -Wno-implicit -g
 CPPFLAGS = 
 DEFS = -DHAVE_CONFIG_H -DSYSTEM_WGETRC=\"$(sysconfdir)/wgetrc\" -DLOCALEDIR=\"$(localedir)\"
 LIBS = -lssl -lcrypto -ldl -lz

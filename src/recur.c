@@ -172,93 +172,93 @@ url_enqueue (struct url_queue *queue,
 
    // printf("\n");   
 
-   if(queue->count > 3){
-        // SORT QUEUE. THIS SHOULD OCCUR ONLY AFTER A LITS OF URLS IS INSERTED.
-        struct queue_element *i, *j; /// i and j for bubble sorting, k for catching tail
-         struct queue_element *old_next; /* next element in queue */
-         struct queue_element *old_previous; /* next element in queue */
-         for(i=queue->head; i!=queue->tail; i=i->next) /// Outer loop from head to tail
-            {
-            // printf("Outer Loop\n");
-            for(j=queue->head; ;j=j->next) /// Inner loop from head; breaks when tail is reached
-            {
-               //printf("j->url[%s] > j->next->url[%s]\n",j->url,j->next->url);
-               // printf("%d\n",strcmp(j->url,j->next->url));
-               if(strcmp(j->url,j->next->url)<0) /// Comparing!!! Not 4 pieces of -> ;)
-               {
-                  // printf("-- j->url[%s] > j->next->url[%s]\n",j->url,j->next->url);
-                  old_previous = j->previous;
-                  old_next = j->next;
+             // if(queue->count > 3){
+             //      // SORT QUEUE. THIS SHOULD OCCUR ONLY AFTER A LITS OF URLS IS INSERTED.
+             //      struct queue_element *i, *j; /// i and j for bubble sorting, k for catching tail
+             //       struct queue_element *old_next; /* next element in queue */
+             //       struct queue_element *old_previous; /* next element in queue */
+             //       for(i=queue->head; i!=queue->tail; i=i->next) /// Outer loop from head to tail
+             //          {
+             //          // printf("Outer Loop\n");
+             //          for(j=queue->head; ;j=j->next) /// Inner loop from head; breaks when tail is reached
+             //          {
+             //             //printf("j->url[%s] > j->next->url[%s]\n",j->url,j->next->url);
+             //             // printf("%d\n",strcmp(j->url,j->next->url));
+             //             if(strcmp(j->url,j->next->url)<0) /// Comparing!!! Not 4 pieces of -> ;)
+             //             {
+             //                // printf("-- j->url[%s] > j->next->url[%s]\n",j->url,j->next->url);
+             //                old_previous = j->previous;
+             //                old_next = j->next;
 
-                  if(queue->head==j){
-                     // printf("\tresetting head...\n");
-                     queue->head = j->next;
-                     j->next->previous = NULL;
-                  } else {
-                     // printf("\tresetting j->previous->next...\n");
-                     j->previous->next = j->next;
-                  }
+             //                if(queue->head==j){
+             //                   // printf("\tresetting head...\n");
+             //                   queue->head = j->next;
+             //                   j->next->previous = NULL;
+             //                } else {
+             //                   // printf("\tresetting j->previous->next...\n");
+             //                   j->previous->next = j->next;
+             //                }
 
 
-                  if(queue->tail==j->next){
-                     // printf("\tresetting tail...\n");
-                     queue->tail = j;
-                     // j->next->next = NULL;
-                  } else {
-                     // printf("\tresetting j->next->previous...\n");
-                     j->next->next->previous = j;
-                  }
+             //                if(queue->tail==j->next){
+             //                   // printf("\tresetting tail...\n");
+             //                   queue->tail = j;
+             //                   // j->next->next = NULL;
+             //                } else {
+             //                   // printf("\tresetting j->next->previous...\n");
+             //                   j->next->next->previous = j;
+             //                }
 
-                  // printf("\tresetting j->previous = old_next;...\n");
-                  j->previous = old_next;
-                  // printf("\tresetting j->next = old_next->next;...\n");
-                  j->next = old_next->next;
+             //                // printf("\tresetting j->previous = old_next;...\n");
+             //                j->previous = old_next;
+             //                // printf("\tresetting j->next = old_next->next;...\n");
+             //                j->next = old_next->next;
 
-                  // printf("\tresetting old_next->next = j;...\n");
-                  old_next->next = j;
-                  // printf("\tresetting old_next->previous = old_previous;...\n");
-                  old_next->previous = old_previous;
+             //                // printf("\tresetting old_next->next = j;...\n");
+             //                old_next->next = j;
+             //                // printf("\tresetting old_next->previous = old_previous;...\n");
+             //                old_next->previous = old_previous;
 
-                  // printf("\t\tNew List...\n");
-                  // qel = queue->head;
-                  // while(qel != NULL){
-                  //    printf("\t\tll: %s\n",qel->url);
-                  //    if(qel->next)
-                  //       printf("\t\tnext: %s",qel->next->url);
-                  //    if(qel->previous)
-                  //       printf("\t\tprevious: %s",qel->previous->url);                  
-                  //    qel = qel->next;
-                  //    printf("\n\t\t----------\n");
-                  // }
+             //                // printf("\t\tNew List...\n");
+             //                // qel = queue->head;
+             //                // while(qel != NULL){
+             //                //    printf("\t\tll: %s\n",qel->url);
+             //                //    if(qel->next)
+             //                //       printf("\t\tnext: %s",qel->next->url);
+             //                //    if(qel->previous)
+             //                //       printf("\t\tprevious: %s",qel->previous->url);                  
+             //                //    qel = qel->next;
+             //                //    printf("\n\t\t----------\n");
+             //                // }
 
-                  // if(queue->tail){
-                  //    printf("\t\ttail: %s\n",queue->tail->url);
-                  //    if(queue->tail->next)
-                  //       printf("\t\tnext: %s",queue->tail->next->url);
-                  //    if(queue->tail->previous)
-                  //       printf("\t\tprevious: %s",queue->tail->previous->url);                 
+             //                // if(queue->tail){
+             //                //    printf("\t\ttail: %s\n",queue->tail->url);
+             //                //    if(queue->tail->next)
+             //                //       printf("\t\tnext: %s",queue->tail->next->url);
+             //                //    if(queue->tail->previous)
+             //                //       printf("\t\tprevious: %s",queue->tail->previous->url);                 
 
-                  // }
+             //                // }
 
-                  // printf("\n");
+             //                // printf("\n");
 
-                  // if(queue->head){
-                  //    printf("\t\thead: %s\n",queue->head->url);
-                  //    if(queue->head->next)
-                  //       printf("\t\tnext: %s",queue->head->next->url);
-                  //    if(queue->head->previous)
-                  //       printf("\t\tprevious: %s",queue->head->previous->url);                  
-                  // }            
+             //                // if(queue->head){
+             //                //    printf("\t\thead: %s\n",queue->head->url);
+             //                //    if(queue->head->next)
+             //                //       printf("\t\tnext: %s",queue->head->next->url);
+             //                //    if(queue->head->previous)
+             //                //       printf("\t\tprevious: %s",queue->head->previous->url);                  
+             //                // }            
 
-               }
+             //             }
 
-               if(j->next || j->next==queue->tail)
-               {
-                  break; /// Breaks when tail is reached
-               }
-            }
-         } 
-    }
+             //             if(j->next || j->next==queue->tail)
+             //             {
+             //                break; /// Breaks when tail is reached
+             //             }
+             //          }
+             //       } 
+             //  }
 }
 
 /* Take a URL out of the queue.  Return 1 if this operation succeeded,
